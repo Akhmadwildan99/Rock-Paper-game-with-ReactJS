@@ -3,16 +3,16 @@ import './game.css';
 
 function Game() {
     const [pilihan, setPilihan] = useState('');
+    const [pilCom, setPilCom] = useState('');
     const [rock, setRock] = useState(false);
     const [paper, setPaper] = useState(false);
     const [scissors, setScissors] = useState(false);
     const [rockCom, setRockCom] = useState(false);
     const [paperCom, setPaperCom] = useState(false);
     const [scissorsCom, setScissorsCom] = useState(false);
-    const [pilCom, setPilCom] = useState('');
-    console.log(pilihan);
-    console.log(pilCom);
-
+    const [playerWin, setPlayerWin] = useState('');
+    const [vs, setVs] = useState(false);
+    const [score, setScore] = useState(0);
 
     function choices(e){
       setPilihan(e.target.dataset.id);
@@ -20,8 +20,9 @@ function Game() {
       console.log(com);
       if(com === 1) return setPilCom('batu');
       if(com === 2) return setPilCom('kertas');
-      return  setPilCom('gunting'); 
+      return  setPilCom('gunting');
     }
+
 
     useEffect(() => {
         if(pilihan === "batu") {
@@ -63,10 +64,34 @@ function Game() {
         }
     }, [pilCom]);
 
- 
+    useEffect(() => {
+      if(pilihan === 'batu' && pilCom === "batu") return setPlayerWin('Draw');
+      if(pilihan === 'kertas' && pilCom === "kertas") return setPlayerWin('Draw');
+      if(pilihan === 'gunting' && pilCom === "gunting") return setPlayerWin('Draw');
+      if(pilihan === 'batu') return (pilCom === 'kertas') ? setPlayerWin('Com win') : setPlayerWin('Player 1 win');
+      if(pilihan === 'kertas') return (pilCom === 'gunting') ? setPlayerWin('Com win') : setPlayerWin('Player 1 win') ;
+      if(pilihan === 'gunting') return (pilCom === 'batu') ? setPlayerWin('Com win') : setPlayerWin('Player 1 win') ;
+    },[pilihan, pilCom])
+
+    useEffect(()=> {
+      if(playerWin !== "") {
+        setTimeout(() => {
+          setVs(true);
+        }, 1000);
+      }
+    },[playerWin]);
+
+    useEffect(() => {
+      if(playerWin === "Player 1 win") {
+        setScore(score + 1)
+      } else if(playerWin === "Com win") {
+        setScore(score - 1)
+      } else {
+        setScore(score + 0)
+      }
+    }, [score, playerWin])
     
 
-    
     return (
     <section id="game-batu-kertas-gunting">
       <header className="header">
@@ -86,13 +111,13 @@ function Game() {
               <li><img id="img-p-gunting" src="images/gunting.png" alt="gunting"  className={scissors ? "gunting active-player" : "gunting"}  onClick={choices} data-id="gunting"/></li>
             </ul>
             <h1>SCORE:</h1>
-            <div className="score_P1">0</div>
+            <div className="score_P1">{score}</div>
           </div>
           <div className="col-4">
               <div className="hasil">
-                <h1 className="vs">vs</h1>
-                <div className="result hidden">
-                  menang
+                <h1 className={vs ? "vs hidden" : "vs"}>vs</h1>
+                <div className={vs ? "result" : "result hidden"}>
+                  {playerWin}
                 </div>
                 <img src="images/refresh.png" alt="refresh"  className="refresh"/>
               </div>
