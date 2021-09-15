@@ -13,6 +13,7 @@ function Game() {
     const [playerWin, setPlayerWin] = useState('');
     const [vs, setVs] = useState(false);
     const [score, setScore] = useState(0);
+    const [scoreCom, setScoreCom] = useState(0);
 
     function choices(e){
       setPilihan(e.target.dataset.id);
@@ -64,14 +65,50 @@ function Game() {
         }
     }, [pilCom]);
 
+
     useEffect(() => {
-      if(pilihan === 'batu' && pilCom === "batu") return setPlayerWin('Draw');
-      if(pilihan === 'kertas' && pilCom === "kertas") return setPlayerWin('Draw');
-      if(pilihan === 'gunting' && pilCom === "gunting") return setPlayerWin('Draw');
-      if(pilihan === 'batu') return (pilCom === 'kertas') ? setPlayerWin('Com win') : setPlayerWin('Player 1 win');
-      if(pilihan === 'kertas') return (pilCom === 'gunting') ? setPlayerWin('Com win') : setPlayerWin('Player 1 win') ;
-      if(pilihan === 'gunting') return (pilCom === 'batu') ? setPlayerWin('Com win') : setPlayerWin('Player 1 win') ;
-    },[pilihan, pilCom])
+      if(pilihan === 'batu' && pilCom === 'batu') {
+        setPlayerWin('Draw');
+        setScore(s => s + 0);
+        setScoreCom(s => s + 0);
+      } else if(pilihan === 'kertas' && pilCom === 'kertas') {
+        setPlayerWin('Draw');
+        setScore(s => s + 0);
+        setScoreCom(s => s + 0);
+      } else if(pilihan === 'gunting' && pilCom === 'gunting') {
+        setPlayerWin('Draw');
+        setScore(s => s + 0);
+        setScoreCom(s => s + 0);
+      } else if(pilihan === 'batu' && pilCom === 'kertas') {
+        setPlayerWin('Com win');
+        setScore(s => s + 0);
+        setScoreCom(s => s + 1);
+      } else if(pilihan === 'batu' && pilCom === 'gunting') {
+        setPlayerWin('Player 1 win');
+        setScore(s => s + 1);
+        setScoreCom(s => s + 0);
+      } else if(pilihan === 'kertas' && pilCom === 'gunting') {
+        setPlayerWin('Com win');
+        setScore(s => s + 0);
+        setScoreCom(s => s + 1);
+      } else if(pilihan === 'kertas' && pilCom === 'batu') {
+        setPlayerWin('Player 1 win');
+        setScore(s => s + 1);
+        setScoreCom(s => s + 0);
+      } else if(pilihan === 'gunting' && pilCom === 'batu') {
+        setPlayerWin('Com win');
+        setScore(s => s + 0);
+        setScoreCom(s => s + 1);
+      } else if(pilihan === 'gunting' && pilCom === 'kertas') {
+        setPlayerWin('Player 1 win');
+        setScore(s => s + 1);
+        setScoreCom(s => s + 0);
+      } else {
+        setPlayerWin('');
+        setScore(s => s + 0);
+        setScoreCom(s => s + 0);
+      }
+    }, [playerWin, pilihan, pilCom])
 
     useEffect(()=> {
       if(playerWin !== "") {
@@ -81,15 +118,6 @@ function Game() {
       }
     },[playerWin]);
 
-    useEffect(() => {
-      if(playerWin === "Player 1 win") {
-        setScore(score + 1)
-      } else if(playerWin === "Com win") {
-        setScore(score - 1)
-      } else {
-        setScore(score + 0)
-      }
-    }, [score, playerWin])
     
 
     return (
@@ -129,10 +157,8 @@ function Game() {
               <li><img id="img-com-kertas" src="images/kertas.png" alt="kertas"  className={paperCom ? "kertas active-player" : "kertas"}/></li>
               <li><img id="img-com-gunting" src="images/gunting.png" alt="gunting"  className={scissorsCom ? "gunting active-player" : "gunting"}/></li>
             </ul>
-            <h1>TIME:</h1>
-            <div className="time hidden">
-              00:00:00
-            </div>
+            <h1>SCORE:</h1>
+            <div className="score_P1">{scoreCom}</div>
           </div>
         </div>
       </div>
