@@ -1,4 +1,7 @@
 import React, {useState, useEffect} from 'react';
+import Header from './header';
+import Player from './Player';
+import Com from './Com';
 import './game.css';
 
 function Game() {
@@ -122,25 +125,10 @@ function Game() {
 
     return (
     <section id="game-batu-kertas-gunting">
-      <header className="header">
-          <ul>
-              <a href="/#"><li className="navigasi"> &laquo; </li></a>
-              <a href="/#"><li className="logo"><img src="images/logo 1.jpg" alt=""/></li></a>
-              <a href="/#"><li className="title">batu kertas gunting</li></a>
-          </ul>
-      </header>
+      <Header />
       <div className="container">
         <div className="row">
-          <div className="col-4">
-            <h1 className="title-player">PLAYER 1</h1>
-            <ul className="player">
-              <li><img id="img-p-batu" src="images/batu.png" alt="batu" data-id="batu" className={rock ? "batu active-player" : "batu"}  onClick={choices} /></li>
-              <li><img id="img-p-kertas" src="images/kertas.png" alt="kertas"  className={paper ? "kertas active-player" : "kertas"}  onClick={choices} data-id="kertas"/></li>
-              <li><img id="img-p-gunting" src="images/gunting.png" alt="gunting"  className={scissors ? "gunting active-player" : "gunting"}  onClick={choices} data-id="gunting"/></li>
-            </ul>
-            <h1>SCORE:</h1>
-            <div className="score_P1">{score}</div>
-          </div>
+          <Player rock={rock} paper={paper} scissors={scissors} choices={choices} score={score} />
           <div className="col-4">
               <div className="hasil">
                 <h1 className={vs ? "vs hidden" : "vs"}>vs</h1>
@@ -150,16 +138,7 @@ function Game() {
                 <img src="images/refresh.png" alt="refresh"  className="refresh"/>
               </div>
           </div>
-          <div className="col-4">
-            <h1 className="title-com">COM</h1>
-            <ul className="com">
-              <li><img id="img-com-batu" src="images/batu.png" alt="batu"  className={rockCom ?"batu active-player" : "batu"}/></li>
-              <li><img id="img-com-kertas" src="images/kertas.png" alt="kertas"  className={paperCom ? "kertas active-player" : "kertas"}/></li>
-              <li><img id="img-com-gunting" src="images/gunting.png" alt="gunting"  className={scissorsCom ? "gunting active-player" : "gunting"}/></li>
-            </ul>
-            <h1>SCORE:</h1>
-            <div className="score_P1">{scoreCom}</div>
-          </div>
+          <Com rockCom={rockCom} paperCom={paperCom} scissorsCom={scissorsCom} scoreCom={scoreCom} />
         </div>
       </div>
     </section>
